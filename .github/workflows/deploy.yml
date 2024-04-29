@@ -26,9 +26,7 @@ jobs:
         run: docker tag demo-application:latest 891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
 
       - name: Push Docker image to ECR
-        uses: docker://docker/cli:20.10.12
-        with:
-          args: push 891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
+        run: docker push 891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
 
       - name: Deploy to ECS
         run: |
