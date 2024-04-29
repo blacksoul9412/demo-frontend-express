@@ -20,7 +20,6 @@ jobs:
       - name: Login to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registry: 891377199948.dkr.ecr.us-east-1.amazonaws.com
           registry-type: private # Specify the registry type
         env:
           AWS_DEFAULT_REGION: us-east-1
