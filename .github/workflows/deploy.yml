@@ -8,15 +8,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_DEFAULT_REGION: us-east-1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set AWS region
+        run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
 
       - name: Login to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
-          aws-region: us-east-1
 
       - name: Build Docker image
         run: docker build -t demo-application .
