@@ -16,8 +16,8 @@ jobs:
 
       - name: Login to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry: 891377199948.dkr.ecr.us-east-1.amazonaws.com
+        env: 
+           AWS_REGION: us-east-1 
 
       - name: Build Docker image
         run: docker build -t demo-application .
