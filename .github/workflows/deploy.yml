@@ -21,6 +21,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registry: 891377199948.dkr.ecr.us-east-1.amazonaws.com
+        env:
+          AWS_DEFAULT_REGION: us-east-1
 
       - name: Build Docker image
         run: docker build -t demo-application .
@@ -37,3 +39,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
