@@ -52,12 +52,13 @@ jobs:
       - name: Register task definition
         id: register_task_definition
         run: |
-          echo "::set-output name=family::$(aws ecs register-task-definition \
+          TASK_DEF=$(aws ecs register-task-definition \
             --family demo-task \
-            --container-definitions '[{\"name\":\"demo-container\",\"image\":\"891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest\", \"memory\":512, \"memoryReservation\":256}]' \
-            --query 'taskDefinition.family' \
+            --container-definitions '[{"name":"demo-container","image":"891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest", "memory":512, "memoryReservation":256}]' \
+            --query 'taskDefinition.taskDefinitionArn' \
             --output text \
-            --region us-east-1)"
+            --region us-east-1)
+          echo "::set-output name=task_def::${TASK_DEF##*/}"
         env:
           AWS_DEFAULT_REGION: us-east-1
           AWS_REGION: us-east-1
@@ -68,5 +69,5 @@ jobs:
             --cluster demo-cluster \
             --service demo-service \
             --force-new-deployment \
-            --task-definition ${{ steps.register_task_definition.outputs.family }} \
+            --task-definition ${{ steps.register_task_definition.outputs.task_def }} \
             --region us-east-1
