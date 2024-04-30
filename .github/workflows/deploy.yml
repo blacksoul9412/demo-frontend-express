@@ -49,6 +49,19 @@ jobs:
         if: steps.check_cluster.outputs.cluster_exists == 'false'
         run: aws ecs create-cluster --cluster-name demo-cluster --region us-east-1
 
-      - name: Deploy to ECS
+      - name: Register task definition
+        id: register_task_definition
         run: |
-          aws ecs update-service --cluster demo-cluster --service demo-service --force-new-deployment --region us-east-1 --image 891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
+          aws ecs register-task-definition \
+            --family demo-task \
+            --container-definitions '[{"name":"demo-container","image":"891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest"}]' \
+            --region us-east-1
+
+      - name: Update ECS service with new task definition
+        run: |
+          aws ecs update-service \
+            --cluster demo-cluster \
+            --service demo-service \
+            --force-new-deployment \
+            --task-definition ${{ steps.register_task_definition.outputs.family }} \
+            --region us-east-1
