@@ -54,7 +54,7 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_REGION: us-east-1
 
-      - name: Update ECS service with new task definition
+      - name: Create ECS service
         if: steps.check_cluster.outputs.cluster_exists == 'true'
         run: |
           aws ecs create-service \
