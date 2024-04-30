@@ -56,6 +56,9 @@ jobs:
             --family demo-task \
             --container-definitions '[{"name":"demo-container","image":"891377199948.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest", "memory":512, "memoryReservation":256}]' \
             --region us-east-1
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_REGION: us-east-1
 
       - name: Update ECS service with new task definition
         run: |
